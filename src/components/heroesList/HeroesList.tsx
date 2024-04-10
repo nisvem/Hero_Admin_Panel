@@ -9,18 +9,23 @@ import {
   heroesFetchingError,
   heroesDeleted,
 } from '../../actions';
+import { Hero, status } from '../../types/';
+
 import HeroesListItem from '../heroesListItem/HeroesListItem';
 import Spinner from '../spinner/Spinner';
+import { State } from '../../reducers';
 
 import './heroesList.scss';
 
 const HeroesList = () => {
-  const { filteredHeroes, heroesLoadingStatus } = useSelector((state) => state);
+  const { filteredHeroes, heroesLoadingStatus } = useSelector<State, State>(
+    (state) => state
+  );
   const dispatch = useDispatch();
   const { request } = useHttp();
 
   const onDelete = useCallback(
-    async (id) => {
+    async (id: string) => {
       try {
         const response = await request(
           `http://localhost:3001/heroes/${id}`,
@@ -41,6 +46,7 @@ const HeroesList = () => {
       try {
         dispatch(heroesFetching());
         const response = await request(`http://localhost:3001/heroes`);
+        console.log(response, 'Fetched');
         dispatch(heroesFetched(response));
       } catch {
         dispatch(heroesFetchingError());
@@ -51,13 +57,13 @@ const HeroesList = () => {
     // eslint-disable-next-line
   }, []);
 
-  if (heroesLoadingStatus === 'loading') {
+  if (heroesLoadingStatus === status.loading) {
     return <Spinner />;
-  } else if (heroesLoadingStatus === 'error') {
+  } else if (heroesLoadingStatus === status.error) {
     return <h5 className='text-center mt-5'>Ошибка загрузки</h5>;
   }
 
-  const renderHeroesList = (arr) => {
+  const renderHeroesList = (arr: Hero[]) => {
     if (arr.length === 0) {
       return (
         <CSSTransition timeout={0} classNames='hero'>

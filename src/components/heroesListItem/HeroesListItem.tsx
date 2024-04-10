@@ -1,6 +1,14 @@
+import { MouseEventHandler } from 'react';
+import { Hero } from '../../types/';
+
 import imgHero from './hero-bg.jpg';
 
-const HeroesListItem = ({ name, description, element, onDelete }) => {
+const HeroesListItem = ({
+  name,
+  description,
+  element,
+  onDelete,
+}: HeroesListItemProp) => {
   let elementClassName;
 
   switch (element) {
@@ -46,5 +54,9 @@ const HeroesListItem = ({ name, description, element, onDelete }) => {
     </li>
   );
 };
+
+interface HeroesListItemProp extends Partial<Hero> {
+  onDelete: MouseEventHandler;
+}
 
 export default HeroesListItem;

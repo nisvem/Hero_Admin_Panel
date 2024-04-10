@@ -1,8 +1,11 @@
 import { useHttp } from '../../hooks/http.hook';
-import { useState } from 'react';
+import { FormEventHandler, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
+import { Filter, status as enumOfStatus } from '../../types/';
+
+import { State } from '../../reducers';
 import { heroCreated } from '../../actions';
 
 const HeroesAddForm = () => {
@@ -10,11 +13,13 @@ const HeroesAddForm = () => {
   const [heroDescr, setHeroDescr] = useState('');
   const [heroElement, setHeroElement] = useState('');
 
-  const { filters, filtersLoadingStatus } = useSelector((state) => state);
+  const { filters, filtersLoadingStatus } = useSelector<State, State>(
+    (state) => state
+  );
   const dispatch = useDispatch();
   const { request } = useHttp();
 
-  const onSubmitHandler = async (e) => {
+  const onSubmitHandler: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     const newHero = {
       id: uuidv4(),
@@ -43,10 +48,10 @@ const HeroesAddForm = () => {
     setHeroElement('');
   };
 
-  const renderFilters = (filters, status) => {
-    if (status === 'loading') {
+  const renderFilters = (filters: Filter[], status: enumOfStatus) => {
+    if (status === enumOfStatus.loading) {
       return <option>Загрузка элементов</option>;
-    } else if (status === 'error') {
+    } else if (status === enumOfStatus.error) {
       return <option>Ошибка загрузки</option>;
     }
 

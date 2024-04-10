@@ -6,9 +6,9 @@ export const useHttp = () => {
 
   const request = useCallback(
     async (
-      url,
+      url: string,
       method = 'GET',
-      body = null,
+      body: object | null = null,
       headers = { 'Content-Type': 'application/json' }
     ) => {
       setProcess('loading');

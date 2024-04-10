@@ -9,12 +9,17 @@ import {
   filtersFetchingError,
   activeFilterChanged,
 } from '../../actions';
+
+import { Filter, status } from '../../types/';
+import { State } from '../../reducers';
+
 import Spinner from '../spinner/Spinner';
 
 const HeroesFilters = () => {
-  const { filters, filtersLoadingStatus, activeFilter } = useSelector(
-    (state) => state
-  );
+  const { filters, filtersLoadingStatus, activeFilter } = useSelector<
+    State,
+    State
+  >((state) => state);
   const dispatch = useDispatch();
   const { request } = useHttp();
 
@@ -35,20 +40,18 @@ const HeroesFilters = () => {
     // eslint-disable-next-line
   }, []);
 
-  if (filtersLoadingStatus === 'loading') {
+  if (filtersLoadingStatus === status.loading) {
     return <Spinner />;
-  } else if (filtersLoadingStatus === 'error') {
+  } else if (filtersLoadingStatus === status.error) {
     return <h5 className='text-center mt-5'>Ошибка загрузки</h5>;
   }
 
-  const renderFilters = (arr) => {
+  const renderFilters = (arr: Filter[]) => {
     if (arr.length === 0) {
       return <h5 className='text-center mt-5'>Фильтры не найдены</h5>;
     }
 
-    // Данные в json-файле я расширил классами и текстом
     return arr.map(({ name, className, label }) => {
-      // Используем библиотеку classnames и формируем классы динамически
       const btnClass = classNames('btn', className, {
         active: name === activeFilter,
       });
