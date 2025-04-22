@@ -1,4 +1,4 @@
-Y# Hero Admin Panel
+## Hero Admin Panel
 
 Hero Admin Panel is a web-based application for managing a collection of heroes. The application allows users to view, filter, and add heroes based on their elements (fire, water, wind, earth, etc.).
 
